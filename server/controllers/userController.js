@@ -9,7 +9,6 @@ class UserController {
         email: req.body.email,
         password: req.body.password,
       });
-      console.log(data)
       res.status(201).json({
         id: data.id,
         username: data.username,
@@ -22,7 +21,6 @@ class UserController {
       const data = await User.findOne({
         email: req.body.email,
       });
-      console.log(data)
       if (compare(req.body.password, data.password)) {
         const access_token = signToken(data);
         res.status(200).json({
