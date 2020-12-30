@@ -1,5 +1,4 @@
 const { Todo } = require('../models')
-
 class TodoController {
 
 }

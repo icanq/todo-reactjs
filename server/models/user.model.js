@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { hash } = require('../helpers/passwordHandler')
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -15,7 +16,11 @@ const userSchema = new Schema({
     required: true
   }
 }, {
-  timestamps: true,
+    timestamps: true,
+    versionKey: false
 });
-
+userSchema.post('validate', function (user, next) {
+  user.password = hash(user.password)
+  next()
+})
 module.exports = User = mongoose.model("User", userSchema);
