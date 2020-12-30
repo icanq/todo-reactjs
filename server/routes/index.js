@@ -9,6 +9,6 @@ router.post('/register', user.register)
 router.post('/login', user.login)
 router.use(authentication)
 router.post('/todos', todo.create)
-// router.get('/todos', todo.get)
+router.get('/todos', todo.read)
 
 module.exports = router

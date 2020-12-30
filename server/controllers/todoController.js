@@ -17,6 +17,12 @@ class TodoController {
       next(err)
     }
   }
+  static async read(req, res, next) {
+    try {
+      const data = await Todo.find({ creator: req.loggedin.id })
+      res.status(200).json(data)
+    } catch (next) {}
+  }
 }
 
 module.exports = TodoController;
