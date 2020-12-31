@@ -3,23 +3,33 @@ const Schema = mongoose.Schema;
 
 const todoSchema = new Schema({
   creator: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: [true, 'UserId required']
+  },
+  name: {
     type: String,
-    required: true
+    required: [true, 'title required']
   },
   description: {
-    type: String,
-    required: true
+    type: String
   },
   status: {
     type: String,
-    required: true
+    required: true,
+    enum: ['ongoing', 'done', 'missed'],
+    default() {
+      return new Date(this.dueDate) >= new Date() ? 'ongoing' : 'missed'
+    }
   },
   dueDate: {
     type: Date,
-    required: true
+    required: true,
+    default: new Date().setHours(23, 59, 59)
   },
 }, {
-  timestamps: true,
+    timestamps: true,
+    versionKey: false
 });
 
 module.exports = Todo = mongoose.model("Todo", todoSchema);

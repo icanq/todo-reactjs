@@ -3,21 +3,32 @@ const { verifyToken } = require('../helpers/tokenHandler');
 module.exports = {
   async authentication(req, res, next) {
     try {
-      const payload = verifyToken(req.headers.access_token);
-      const user = await User.findById(payload.id);
-      if (!user) {
-        throw {
-          status: 404,
-          message: 'Account not found',
-        };
-      } else {
-        req.loggedin = user;
+      const { access_token } = req.headers;
+      if (access_token) {
+        const decoded = verifyToken(access_token);
+        const findUser = await User.findById(decoded.id);
+        if (findUser) {
+          req.loggedin = decoded;
+          next();
+        } else {
+          throw {
+            status: 401,
+            message: "Please do Login"
+          }
+        }
+    } else {
+      throw {
+        status: 401,
+        message: "Please do Login"
       }
-    } catch (next) {}
+    }
+    } catch (error) {
+      next(error)
+    }
   },
   async authorization(req, res, next) {
     try {
-      const todo = await Todo.findById(req.params.id);
+      const todo = await Todo.findById(req.params._id);
       if (!todo) {
         throw {
           status: 404,
@@ -27,7 +38,7 @@ module.exports = {
         next();
       } else {
         throw {
-          status: 403,
+          status: 401,
           message: 'Unauthorized',
         };
       }
