@@ -10,5 +10,9 @@ router.post('/login', user.login)
 router.use(authentication)
 router.post('/todos', todo.create)
 router.get('/todos', todo.read)
+router.use('todos/:id', authorization)
+router.get('/todos/:id', todo.findById)
+router.put('/todos/:id', todo.update)
+router.delete('/todos/:id', todo.delete)
 
 module.exports = router

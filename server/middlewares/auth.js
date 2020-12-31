@@ -28,7 +28,7 @@ module.exports = {
   },
   async authorization(req, res, next) {
     try {
-      const todo = await Todo.findById(req.params.id);
+      const todo = await Todo.findById(req.params._id);
       if (!todo) {
         throw {
           status: 404,
@@ -38,7 +38,7 @@ module.exports = {
         next();
       } else {
         throw {
-          status: 403,
+          status: 401,
           message: 'Unauthorized',
         };
       }
