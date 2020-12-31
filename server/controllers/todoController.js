@@ -77,7 +77,13 @@ class TodoController {
       .catch(next);
   }
 
-  
+  static async delete(req, res, next) {
+    Todo.findByIdAndDelete(req.params.id)
+      .then((_) => {
+        res.status(201).json({ message: 'deleted' });
+      })
+      .catch(next);
+  }
 }
 
 module.exports = TodoController;
